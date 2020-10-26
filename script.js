@@ -1,0 +1,61 @@
+var btn = document.getElementById('btn');
+
+var bell = new WaveBell();
+var data = [];
+
+btn.addEventListener('click', function (e) {
+  if (bell.state === 'inactive') {
+    bell.start(1000 / 25);
+  } else {
+    bell.stop();
+  }
+});
+
+bell.on('wave', function (e) {
+});
+
+bell.on('start', function () {
+  btn.innerText = 'Stop';
+});
+bell.on('stop', async function () {
+  btn.innerText = 'Start';
+  var url = URL.createObjectURL(bell.result);
+  data = await getAmplitudeData(url, 0.01);
+  updateLathe(data, document.getElementById('select-color').value, 2, 0.3);
+});
+
+document.getElementById('file-input').addEventListener('change', async function (event) {
+  if (event.target.files.length > 0) {
+    let url = URL.createObjectURL(event.target.files[0]);
+    data = await getAmplitudeData(url, 0.01);
+    updateLathe(data, document.getElementById('select-color').value, 2, 0.3);
+  }
+})
+
+document.getElementById('select-color').addEventListener('change', function (event) {
+  console.log('color', event.target.value);
+  updateLathe(data, event.target.value, 2, 0.3);
+})
+
+/**
+ * Get Series of Amplitude from audio file url
+ * @param {String} url the url of audio file
+ * @param {Number} samplingDuration sampling duration (second)
+ */
+async function getAmplitudeData(url, samplingDuration = 0.01) {
+  return new Promise((resolve, reject) => {
+    var context = new AudioContext();
+    fetch(url)
+      .then(response => response.arrayBuffer())
+      .then(arrayBuffer => context.decodeAudioData(arrayBuffer))
+      .then(audioBuffer => {
+        var sampleRate = audioBuffer.sampleRate;
+        const rawData = audioBuffer.getChannelData(0);
+        let filteredData = [];
+        for (var i = 0; i < rawData.length; i += (sampleRate * samplingDuration)) {
+          filteredData.push(Math.abs(rawData[i]));
+        }
+        resolve(filteredData);
+      })
+  })
+}
