@@ -1,7 +1,9 @@
-var btn = document.getElementById('btn');
+const UPLOAD_API_URL = 'http://localhost:3000/api/upload';
 
+var btn = document.getElementById('btn');
 var bell = new WaveBell();
 var data = [];
+var file = null;
 
 btn.addEventListener('click', function (e) {
   if (bell.state === 'inactive') {
@@ -19,6 +21,7 @@ bell.on('start', function () {
 });
 bell.on('stop', async function () {
   btn.innerText = 'Start';
+  file = new File([bell.result], "upload.weba")
   var url = URL.createObjectURL(bell.result);
   data = await getAmplitudeData(url, 0.01);
   updateLathe(data, document.getElementById('select-color').value, 2, 0.3);
@@ -26,6 +29,7 @@ bell.on('stop', async function () {
 
 document.getElementById('file-input').addEventListener('change', async function (event) {
   if (event.target.files.length > 0) {
+    file = event.target.files[0];
     let url = URL.createObjectURL(event.target.files[0]);
     data = await getAmplitudeData(url, 0.01);
     updateLathe(data, document.getElementById('select-color').value, 2, 0.3);
@@ -36,6 +40,25 @@ document.getElementById('select-color').addEventListener('change', function (eve
   console.log('color', event.target.value);
   updateLathe(data, event.target.value, 2, 0.3);
 })
+
+document.getElementById('btn-upload').addEventListener('click', function () {
+  if (!file) {
+    console.log('no file prepared');
+    return;
+  }
+
+  let formData = new FormData();
+  formData.append("audio_file", file);
+  fetch(
+    UPLOAD_API_URL,
+    { method: "POST", body: formData }
+  )
+    .then(res => res.json())
+    .then(res => {
+      console.log(`${UPLOAD_API_URL}/${res.name}`)
+    });
+})
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Get Series of Amplitude from audio file url
