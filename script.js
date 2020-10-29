@@ -21,7 +21,7 @@ bell.on('start', function () {
 });
 bell.on('stop', async function () {
   btn.innerText = 'Start';
-  file = new File([bell.result], "upload.weba")
+  file = new File([bell.result], "upload.mp3")
   var url = URL.createObjectURL(bell.result);
   data = await getAmplitudeData(url, 0.01);
   updateLathe(data, document.getElementById('select-color').value, 2, 0.3);
