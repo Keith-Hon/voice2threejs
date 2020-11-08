@@ -4,6 +4,7 @@ var btn = document.getElementById('btn');
 var bell = new WaveBell();
 var data = [];
 var file = null;
+const samplingRate = 0.01;
 
 btn.addEventListener('click', function (e) {
   if (bell.state === 'inactive') {
@@ -23,7 +24,7 @@ bell.on('stop', async function () {
   btn.innerText = 'Start';
   file = new File([bell.result], "upload.mp3")
   var url = URL.createObjectURL(bell.result);
-  data = await getAmplitudeData(url, 0.01);
+  data = await getAmplitudeData(url, samplingRate);
   updateLathe(data, document.getElementById('select-color').value, 2, 0.3);
 });
 
@@ -31,7 +32,7 @@ document.getElementById('file-input').addEventListener('change', async function 
   if (event.target.files.length > 0) {
     file = event.target.files[0];
     let url = URL.createObjectURL(event.target.files[0]);
-    data = await getAmplitudeData(url, 0.01);
+    data = await getAmplitudeData(url, samplingRate);
     updateLathe(data, document.getElementById('select-color').value, 2, 0.3);
   }
 })
