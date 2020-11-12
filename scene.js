@@ -10,7 +10,7 @@ function init() {
   var WIDTH = 600;
   var HEIGHT = 600;
 	camera = new THREE.PerspectiveCamera( 70, WIDTH / HEIGHT, 0.01, 50 );
-  camera.position.set(-0.2, 0.5, 2);
+  camera.position.set(-1.5, 0.5, 1.2);
   camera.lookAt(scene.position);
   scene.add(camera);
 
@@ -29,7 +29,7 @@ function init() {
 	renderer.setSize( WIDTH, HEIGHT );
   document.body.appendChild(renderer.domElement);
 
-  controls = new THREE.OrbitControls(camera, renderer.domElement);
+  // controls = new THREE.OrbitControls(camera, renderer.domElement);
   // controls.minDistance = 1;
   // controls.maxDistance = 2;
 }
