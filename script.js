@@ -86,3 +86,13 @@ async function getAmplitudeData(url, samplingDuration = 0.01) {
       })
   })
 }
+
+document.getElementById('chk-follow-progress').addEventListener('click', function () {
+  var checked = document.getElementById('chk-follow-progress').checked;
+  console.log(checked);
+  if (checked) {
+    document.getElementById('canvas-container').classList.add('show-line-indicator');
+  } else {
+    document.getElementById('canvas-container').classList.remove('show-line-indicator');
+  }
+})

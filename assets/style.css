@@ -10,3 +10,24 @@ div {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+
+#canvas-container {
+  width: min-content;
+  position: relative;
+}
+
+#canvas-container #line-indicator {
+  position: absolute;
+  width: 600px;
+  top: 0;
+  left: 0;
+  height: 1px;
+  background: #0ff;
+  margin: 0;
+  display: none;
+  box-shadow: 0px 0px 20px 4px #0ff;
+}
+
+#canvas-container.show-line-indicator #line-indicator {
+  display: block;
+}

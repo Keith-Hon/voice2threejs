@@ -1,10 +1,31 @@
 var camera, scene, renderer;
-var mesh;
+var mesh, sphere;
 var clipPlane;
 
 var tree_height = 1;
 init();
 animate();
+
+function toScreenPosition(obj, camera) {
+  var vector = new THREE.Vector3();
+
+  var widthHalf = 0.5 * renderer.context.canvas.width;
+  var heightHalf = 0.5 * renderer.context.canvas.height;
+
+  obj.updateMatrixWorld();
+  vector.setFromMatrixPosition(obj.matrixWorld);
+  vector.project(camera);
+
+  vector.x = (vector.x * widthHalf) + widthHalf;
+  vector.y = -(vector.y * heightHalf) + heightHalf;
+
+  return {
+    x: vector.x,
+    y: vector.y
+  };
+
+};
+
 // var mesh = null;
 function init() {
   scene = new THREE.Scene();
@@ -27,13 +48,24 @@ function init() {
   light.position.set(5, -20, 10);
   scene.add(light);
 
+  const geometry = new THREE.SphereGeometry(0.1, 32, 32);
+  const material = new THREE.MeshBasicMaterial({
+    color: 0xffff00,
+  });
+  sphere = new THREE.Mesh(geometry, material);
+  sphere.visible = false;
+  scene.add(sphere);
+
   renderer = new THREE.WebGLRenderer({
     antialias: true
   });
   renderer.setSize(WIDTH, HEIGHT);
   renderer.localClippingEnabled = true;
 
-  document.body.appendChild(renderer.domElement);
+  document.getElementById('canvas-container').appendChild(renderer.domElement);
+  var line = document.createElement('div');
+  line.id = 'line-indicator';
+  document.getElementById('canvas-container').appendChild(line);
 
   // controls = new THREE.OrbitControls(camera, renderer.domElement);
   // controls.minDistance = 1;
@@ -51,10 +83,10 @@ function animate() {
       let duration = aud.duration;
       let currentTime = aud.currentTime;
       let rate = (duration > 0) ? (currentTime / duration) : 1;
-      clipPlane.constant = rate * tree_height - (tree_height / 2);
-    } catch (_) {
-
-    }
+      clipPlane.constant = sphere.position.y = rate * tree_height - (tree_height / 2);
+      let pos = toScreenPosition(sphere, camera);
+      document.getElementById('line-indicator').style.top = `${pos.y}px`;
+    } catch (_) {}
   }
 }
 
@@ -67,6 +99,7 @@ function animate() {
  */
 function updateLathe(data, color = 0xffff00, MAX_HEIGHT = 2, MAX_RADIUS = 1) {
   tree_height = MAX_HEIGHT;
+  sphere.position.y = tree_height;
 
   if (!Array.isArray(data) || data.length == 0) return;
   if (typeof color === 'string') color = parseInt(color, 16);
@@ -98,7 +131,7 @@ function updateLathe(data, color = 0xffff00, MAX_HEIGHT = 2, MAX_RADIUS = 1) {
 
   shape.lineTo(startPoint[0], startPoint[1]);
 
-  const DEPTH = 0.001;
+  const DEPTH = 0.005;
   const extrudeSettings = {
     steps: 1,
     depth: DEPTH,
