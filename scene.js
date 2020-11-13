@@ -98,7 +98,7 @@ function updateLathe(data, color = 0xffff00, MAX_HEIGHT = 2, MAX_RADIUS = 1) {
 
   shape.lineTo(startPoint[0], startPoint[1]);
 
-  const DEPTH = 0;
+  const DEPTH = 0.001;
   const extrudeSettings = {
     steps: 1,
     depth: DEPTH,
@@ -113,8 +113,6 @@ function updateLathe(data, color = 0xffff00, MAX_HEIGHT = 2, MAX_RADIUS = 1) {
     clipShadows: true
   });
 
-
-  // const geometry = new THREE.TorusKnotBufferGeometry(0.4, 0.08, 95, 20);
   const geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
 
   mesh = new THREE.Mesh(geometry, material);
@@ -123,7 +121,7 @@ function updateLathe(data, color = 0xffff00, MAX_HEIGHT = 2, MAX_RADIUS = 1) {
   scene.add(mesh);
 
   let subObjects = [];
-  let BRANCH_COUNT = 8;
+  let BRANCH_COUNT = 16;
   for (var i = 1; i < (BRANCH_COUNT + 1); i++) {
     var angle = Math.PI / BRANCH_COUNT * i;
     var cloned = mesh.clone();
