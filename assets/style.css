@@ -47,17 +47,16 @@ div {
   left: 0;
   width: 10px;
   height: 10px;
-  transform: rotate(45deg);
 }
 
-/* diamond shape */
-.glow {
+.glow0 {
+  transform: rotate(45deg);
   background: #C0FFE4;
-  animation: glow 2s infinite ease;
+  animation: glow0 1s infinite ease;
 }
 
 /* animates box shadow glow effect */
-@keyframes glow {
+@keyframes glow0 {
 
   0%,
   100% {
@@ -66,5 +65,43 @@ div {
 
   50% {
     box-shadow: 0 0 10px 8px #8FFFCF, inset 2px 2px #D3FFEC;
+  }
+}
+
+.glow1 {
+  transform: rotate(45deg);
+  background: #fa5252;
+  animation: glow1 2s infinite ease;
+}
+
+/* animates box shadow glow effect */
+@keyframes glow1 {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px 5px #ffa08f;
+  }
+
+  50% {
+    box-shadow: 0 0 10px 8px#ffa08f;
+  }
+}
+
+.glow2 {
+  transform: rotate(45deg);
+  background: #bff52c;
+  animation: glow2 3s infinite ease;
+}
+
+/* animates box shadow glow effect */
+@keyframes glow2 {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px 5px #bcff8f;
+  }
+
+  50% {
+    box-shadow: 0 0 10px 8px #afff8f;
   }
 }

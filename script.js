@@ -125,7 +125,7 @@ function generateSparkles(data, height, radius) {
     var index = parseInt(Math.random() * data.length);
     var star = document.createElement('div');
     star.classList.add('star');
-    star.classList.add('glow');
+    star.classList.add(`glow${parseInt(Math.random() * 100) % 3}`)
     var left = div.clientWidth / 2 + (data[index] * div.clientWidth * radius * 0.5 * (parseInt(Math.random() * 100) % 2 * 2 - 1));
     var top = div.clientHeight / 2 - (index - data.length / 2) * 1;
     star.style.top = `${top}px`;
