@@ -14,8 +14,7 @@ btn.addEventListener('click', function (e) {
   }
 });
 
-bell.on('wave', function (e) {
-});
+bell.on('wave', function (e) {});
 
 bell.on('start', function () {
   btn.innerText = 'Stop';
@@ -51,9 +50,11 @@ document.getElementById('btn-upload').addEventListener('click', function () {
   let formData = new FormData();
   formData.append("audio_file", file);
   fetch(
-    UPLOAD_API_URL,
-    { method: "POST", body: formData }
-  )
+      UPLOAD_API_URL, {
+        method: "POST",
+        body: formData
+      }
+    )
     .then(res => res.json())
     .then(res => {
       console.log(`${UPLOAD_API_URL}/${res.name}`)
@@ -68,6 +69,8 @@ document.getElementById('btn-upload').addEventListener('click', function () {
  */
 async function getAmplitudeData(url, samplingDuration = 0.01) {
   return new Promise((resolve, reject) => {
+    var aud = document.getElementById('aud-playback');
+    aud.src = url
     var context = new AudioContext();
     fetch(url)
       .then(response => response.arrayBuffer())

@@ -5,3 +5,8 @@ body {
 h2 {
   margin: 0.5rem 0;
 }
+
+div {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
