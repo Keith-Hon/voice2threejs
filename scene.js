@@ -1,6 +1,26 @@
-var camera, scene, renderer;
+var camera, scene, renderer, composer;
 var mesh, sphere;
 var clipPlane;
+var sparkles = [];
+
+var SPARKLE_PRESETS = [{
+    baseColor: [192 / 255, 255 / 255, 228 / 255],
+    outlineColor: [143 / 255, 255 / 255, 207 / 255],
+    duration: 2
+  },
+  {
+    baseColor: [250 / 255, 82 / 255, 82 / 255],
+    outlineColor: [250 / 255, 162 / 255, 143 / 255],
+    duration: 1.3
+  },
+  {
+    baseColor: [190 / 255, 245 / 255, 44 / 255],
+    outlineColor: [188 / 255, 255 / 255, 143 / 255],
+    duration: 1.6
+  },
+]
+
+var outlines = [];
 
 var tree_height = 1;
 init();
@@ -30,6 +50,7 @@ function toScreenPosition(obj, camera) {
 function init() {
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0xd6d6d6);
+  // scene.background = new THREE.Color(0x000000)
   var WIDTH = 600;
   var HEIGHT = 600;
   camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 0.01, 50);
@@ -67,6 +88,37 @@ function init() {
   line.id = 'line-indicator';
   document.getElementById('canvas-container').appendChild(line);
 
+  composer = new THREE.EffectComposer(renderer);
+
+  renderPass = new THREE.RenderPass(scene, camera);
+  composer.addPass(renderPass);
+
+  for (var i = 0; i < SPARKLE_PRESETS.length; i++) {
+    var outlinePass = new THREE.OutlinePass(new THREE.Vector2(WIDTH, HEIGHT), scene, camera);
+
+    outlinePass.edgeStrength = 10;
+    outlinePass.edgeGlow = 1;
+    outlinePass.edgeThickness = 2;
+    outlinePass.pulsePeriod = SPARKLE_PRESETS[i].duration;
+    outlinePass.visibleEdgeColor = new THREE.Color(
+      SPARKLE_PRESETS[i].outlineColor[0],
+      SPARKLE_PRESETS[i].outlineColor[1],
+      SPARKLE_PRESETS[i].outlineColor[2]
+    );
+    outlinePass.hiddenEdgeColor = new THREE.Color(
+      SPARKLE_PRESETS[i].outlineColor[0] * 0.7,
+      SPARKLE_PRESETS[i].outlineColor[1] * 0.7,
+      SPARKLE_PRESETS[i].outlineColor[2] * 0.7
+    );
+
+    composer.addPass(outlinePass);
+    outlines.push(outlinePass);
+  }
+
+  effectFXAA = new THREE.ShaderPass(THREE.FXAAShader);
+  effectFXAA.uniforms['resolution'].value.set(1 / WIDTH, 1 / HEIGHT);
+  composer.addPass(effectFXAA);
+
   // controls = new THREE.OrbitControls(camera, renderer.domElement);
   // controls.minDistance = 1;
   // controls.maxDistance = 2;
@@ -75,6 +127,7 @@ function init() {
 function animate() {
   requestAnimationFrame(animate);
   renderer.render(scene, camera);
+  composer.render();
 
   let follow = document.getElementById('chk-follow-progress').checked;
   if (follow && clipPlane) {
@@ -159,11 +212,32 @@ function updateLathe(data, color = 0xffff00, MAX_HEIGHT = 2, MAX_RADIUS = 1) {
     var angle = Math.PI / BRANCH_COUNT * i;
     var cloned = mesh.clone();
     var rate = i % (BRANCH_COUNT / 2);
-    if (rate == 0) rate = BRANCH_COUNT / 2;
+    if (rate <= (BRANCH_COUNT / 4)) rate = BRANCH_COUNT / 2 - rate;
     cloned.scale.set(rate / (BRANCH_COUNT / 2), 1, 1);
     cloned.rotation.y = angle;
     subObjects.push(cloned);
   }
   subObjects.forEach(subObject => mesh.add(subObject));
   subObjects = [];
+
+  // generate sparkles
+  // console.log(mesh)
+  for (var i = 0; i < SPARKLES_COUNT; i++) {
+    var sparkle_group_index = i % SPARKLE_PRESETS.length;
+
+    let childIndex = parseInt(Math.random() * BRANCH_COUNT);
+    let vertices = mesh.children[childIndex].geometry.vertices;
+    let pos = vertices[parseInt(Math.random() * vertices.length)];
+
+    const geometry = new THREE.SphereGeometry(0.015, 32, 32);
+    const material = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(SPARKLE_PRESETS[sparkle_group_index].baseColor[0], SPARKLE_PRESETS[sparkle_group_index].baseColor[1], SPARKLE_PRESETS[sparkle_group_index].baseColor[2]),
+      depthTest: false,
+    });
+    var star = new THREE.Mesh(geometry, material);
+    scene.add(star);
+    star.position.set(pos.x, pos.y, pos.z);
+    sparkles.push(star);
+    outlines[sparkle_group_index].selectedObjects.push(star);
+  }
 }

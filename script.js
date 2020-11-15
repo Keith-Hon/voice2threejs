@@ -112,24 +112,24 @@ async function getAmplitudeData(url, samplingDuration = 0.01) {
  * @param {Number} radius
  */
 function generateSparkles(data, height, radius) {
-  if (!Array.isArray(data) || data.length == 0) return;
-  var maxAmplitude = Math.max.apply(Math, data);
-  var div = document.getElementById('sparkles-container')
-  if (!div) {
-    div = document.createElement('div');
-    div.id = 'sparkles-container';
-    document.getElementById('canvas-container').appendChild(div);
-  }
+  // if (!Array.isArray(data) || data.length == 0) return;
+  // var maxAmplitude = Math.max.apply(Math, data);
+  // var div = document.getElementById('sparkles-container')
+  // if (!div) {
+  //   div = document.createElement('div');
+  //   div.id = 'sparkles-container';
+  //   document.getElementById('canvas-container').appendChild(div);
+  // }
 
-  for (var i = 0; i < SPARKLES_COUNT; i++) {
-    var index = parseInt(Math.random() * data.length);
-    var star = document.createElement('div');
-    star.classList.add('star');
-    star.classList.add(`glow${parseInt(Math.random() * 100) % 3}`)
-    var left = div.clientWidth / 2 + (data[index] * div.clientWidth * radius * 0.5 * (parseInt(Math.random() * 100) % 2 * 2 - 1));
-    var top = div.clientHeight / 2 - (index - data.length / 2) * 1;
-    star.style.top = `${top}px`;
-    star.style.left = `${left}px`;
-    div.appendChild(star);
-  }
+  // for (var i = 0; i < SPARKLES_COUNT; i++) {
+  //   var index = parseInt(Math.random() * data.length);
+  //   var star = document.createElement('div');
+  //   star.classList.add('star');
+  //   star.classList.add(`glow${parseInt(Math.random() * 100) % 3}`)
+  //   var left = div.clientWidth / 2 + (data[index] * div.clientWidth * radius * 0.5 * (parseInt(Math.random() * 100) % 2 * 2 - 1));
+  //   var top = div.clientHeight / 2 - (index - data.length / 2) * 1;
+  //   star.style.top = `${top}px`;
+  //   star.style.left = `${left}px`;
+  //   div.appendChild(star);
+  // }
 }
