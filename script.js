@@ -30,7 +30,7 @@ bell.on('stop', async function () {
   file = new File([bell.result], "upload.mp3")
   var url = URL.createObjectURL(bell.result);
   data = await getAmplitudeData(url, samplingRate);
-  updateLathe(data, document.getElementById('select-color').value, HEIGHT, RADIUS);
+  window.sceneManager.updateLathe(data, document.getElementById('select-color').value, HEIGHT, RADIUS);
   generateSparkles(data, HEIGHT, RADIUS);
 });
 
@@ -39,19 +39,18 @@ document.getElementById('file-input').addEventListener('change', async function 
     file = event.target.files[0];
     let url = URL.createObjectURL(event.target.files[0]);
     data = await getAmplitudeData(url, samplingRate);
-    updateLathe(data, document.getElementById('select-color').value, HEIGHT, RADIUS);
+    window.sceneManager.updateLathe(data, document.getElementById('select-color').value, HEIGHT, RADIUS);
     generateSparkles(data, HEIGHT, RADIUS);
   }
 })
 
 document.getElementById('select-color').addEventListener('change', function (event) {
   console.log('color', event.target.value);
-  updateLathe(data, event.target.value, HEIGHT, RADIUS);
+  window.sceneManager.updateLathe(data, event.target.value, HEIGHT, RADIUS);
 })
 
 document.getElementById('chk-follow-progress').addEventListener('click', function () {
   var checked = document.getElementById('chk-follow-progress').checked;
-  console.log(checked);
   if (checked) {
     document.getElementById('canvas-container').classList.add('show-line-indicator');
   } else {
