@@ -9,7 +9,7 @@ const samplingRate = 0.01;
 const HEIGHT = 2;
 const RADIUS = 0.3;
 
-const SPARKLES_COUNT = 20;
+const SPARKLES_COUNT = 30;
 
 btn.addEventListener('click', function (e) {
   if (bell.state === 'inactive') {

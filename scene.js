@@ -19,7 +19,7 @@ var SPARKLE_PRESETS = [{
 (function () {
   var SceneManager = function () {
     const self = this;
-    var camera, scene, renderer, composer;
+    var camera, scene, renderer, composer, controls;
     var mesh, sphere;
     var clipPlane;
     var sparkles = [];
@@ -52,11 +52,11 @@ var SPARKLE_PRESETS = [{
     this.init = function () {
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0xd6d6d6);
-      // scene.background = new THREE.Color(0x000000)
+      // scene.background = new THREE.Color(0x000000);
       var WIDTH = 600;
       var HEIGHT = 600;
       camera = new THREE.PerspectiveCamera(70, WIDTH / HEIGHT, 0.01, 50);
-      camera.position.set(-1.5, 0.5, 1.2);
+      camera.position.set(-0.7, 0.5, 1.6);
       camera.lookAt(scene.position);
       scene.add(camera);
 
@@ -218,8 +218,8 @@ var SPARKLE_PRESETS = [{
         var angle = Math.PI / BRANCH_COUNT * i;
         var cloned = mesh.clone();
         var rate = i % (BRANCH_COUNT / 2);
-        if (rate <= (BRANCH_COUNT / 4)) rate = BRANCH_COUNT / 2 - rate;
-        cloned.scale.set(rate / (BRANCH_COUNT / 2), 1, 1);
+        rate = Math.abs(BRANCH_COUNT / 4 - rate);
+        cloned.scale.set(rate / (BRANCH_COUNT / 2) * 2, 1, 1);
         cloned.rotation.y = angle;
         subObjects.push(cloned);
       }
