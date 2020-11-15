@@ -210,7 +210,6 @@ var SPARKLE_PRESETS = [{
 
       mesh = new THREE.Mesh(geometry, material);
       mesh.castShadow = true;
-      // object.position.y = 0.8
       scene.add(mesh);
 
       let subObjects = [];
@@ -228,7 +227,6 @@ var SPARKLE_PRESETS = [{
       subObjects = [];
 
       // generate sparkles
-      // console.log(mesh)
       for (var i = 0; i < SPARKLES_COUNT; i++) {
         var sparkle_group_index = i % SPARKLE_PRESETS.length;
 
