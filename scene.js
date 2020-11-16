@@ -234,7 +234,7 @@ var SPARKLE_PRESETS = [{
         let vertices = mesh.children[childIndex].geometry.vertices;
         let pos = vertices[parseInt(Math.random() * vertices.length)];
 
-        const geometry = new THREE.SphereGeometry(0.008, 32, 32);
+        const geometry = new THREE.SphereGeometry(0.004, 32, 32);
         const material = new THREE.MeshBasicMaterial({
           color: new THREE.Color(SPARKLE_PRESETS[sparkle_group_index].baseColor[0], SPARKLE_PRESETS[sparkle_group_index].baseColor[1], SPARKLE_PRESETS[sparkle_group_index].baseColor[2]),
           depthTest: false,
