@@ -1,16 +1,16 @@
 'use strict';
 var SPARKLE_PRESETS = [{
-    baseColor: [192 / 255, 255 / 255, 228 / 255],
+    baseColor: [1, 1, 1],
     outlineColor: [143 / 255, 255 / 255, 207 / 255],
     duration: 2
   },
   {
-    baseColor: [250 / 255, 82 / 255, 82 / 255],
+    baseColor: [1, 1, 1],
     outlineColor: [250 / 255, 162 / 255, 143 / 255],
     duration: 1.3
   },
   {
-    baseColor: [190 / 255, 245 / 255, 44 / 255],
+    baseColor: [1, 1, 1],
     outlineColor: [188 / 255, 255 / 255, 143 / 255],
     duration: 1.6
   },
