@@ -1,5 +1,7 @@
 # 3D-wav-visualizer
 
+![alt text](https://github.com/Keith-Hon/voice2threejs/blob/master/screenshots/Capture.PNG?raw=true)
+
 Steps
 1. npm install -g http-server
 2. http-server
